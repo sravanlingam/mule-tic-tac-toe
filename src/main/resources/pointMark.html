@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+  background: #212121;
+  color: #666;
+}
+h1{
+  text-align: center;
+  color: #fff;
+}
+.clearfix{
+  clear: both;
+}
+#box{
+  width: 350px;
+  overflow: auto;
+  margin: 40px auto;
+  background: #666;
+  padding-bottom: 40px;
+  border-radius: 10px;
+}
+#message{
+  background: #333;
+  color: #fff;
+}
+#gameBoard   li{
+  float: left;
+  margin: 10px;
+  height: 70px;
+  width: 70px;
+  font-size: 50px;
+  background: #333;
+  color: #ccc;
+  list-style: none;
+  text-align: center;
+  border-radius: 5px;
+}
+button,input{
+  float: left;
+  margin: 10px;
+  height: 70px;
+  width: 70px;
+  font-size: 50px;
+  background: #333;
+  color: #ccc;
+  list-style: none;
+  text-align: center;
+  border-radius: 5px;
+  
+}
+#gameBoard li:hover,button:hover,input:hover, #reset:hover{
+  cursor: pointer;
+  background: #000;
+}
+ h2 {
+  color: #fff;
+ text-shadow: 0 0 20px #38A1DB, 0 0 3px #ff4da6, 0 0 4px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+}
+h3 {
+  color: #fff;
+ text-shadow: 0 0 20px #38A1DB, 0 0 3px #ff4da6, 0 0 4px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+}
+#reset{
+  border: 0;
+  background: #444;
+  color: #fff;
+  width: 70%;
+  padding: 15px;
+  border-radius: 5px;
+
+}
+.o{
+  color: green !important;
+}
+.x{
+  color: red !important;
+}
+footer{
+  display: block;
+  text-align: center;
+  padding-top: 20px;
+}
+</style>
+</head>
+
+  <body>
+<div class="text-center"id="box">
+  <header>
+    <h1>Play Tic Tac Toe</h1>
+  </header>
+
+
+<div id="message"></div>
+  <ul id="gameBoard">
+  <form action="/play" method="get">
+     <input type="submit" name = "index1" value = #[payload.index1] id="1">1</input> 
+  	 <input type="submit" name = "index2" value = #[payload.index2] id="2">2</input> 
+     <input type="submit" name = "index3" value = #[payload.index3] id="3">3</input> 
+     <input type="submit" name = "index4" value = #[payload.index4] id="4">4</input> 
+  	 <input type="submit" name = "index5" value = #[payload.index5] id="5">5</input> 
+     <input type="submit" name = "index6" value = #[payload.index6] id="6">6</input> 
+     <input type="submit" name = "index7" value = #[payload.index7] id="7">7</input> 
+  	 <input type="submit" name = "index8" value = #[payload.index8] id="8">8</input> 
+     <input type="submit" name = "index9" value = #[payload.index9] id="9">9</input> 
+  </form> 
+  
+  </ul>
+  <div class="clearfix"></div>
+ 
+
+</div>
+<footer >
+<h2 >Developer : Sravan Lingam </h2> 
+ <h3  >Using MuleSoft ObjectStore Concept</h3> 
+
+</footer>
+</body>
+</html>
+

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b286391e-1325-4187-b38d-796b869da4cf" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="tic-tac-toeFlow-login" doc:id="c2584fcb-e01c-4d59-b794-709f9ef1c59b" >
+		<http:listener doc:name="Login" doc:id="f8bb5384-c7f7-43cd-a2bb-c892e7446327" config-ref="HTTP_Listener_config" path="/login"/>
+		<os:retrieve-all doc:name="Retrieve all" doc:id="3af8c68c-16fa-4e56-9fc1-588feb085263" target="RA"/>
+		<flow-ref doc:name="tic-tac-toeFlow-removeALL" doc:id="4ef9b39d-65a2-4b34-86b7-9da71534286c" name="tic-tac-toeFlow-removeALL"/>
+		<parse-template doc:name="Parse Template" doc:id="ec864940-3028-467c-9a50-6bd8b2997755" location="home.html"/>
+	</flow>
+	<flow name="tic-tac-toeFlow-startPlay" doc:id="1e796d6b-0246-45b6-93b1-9e69170340ba" >
+		<http:listener doc:name="Listener" doc:id="6898460e-1c1c-46b4-bc6e-5b8728b2938f" config-ref="HTTP_Listener_config" path="/play"/>
+		<os:retrieve doc:name="Retrieve indexo" doc:id="3df6e018-d52e-4b3d-b3f3-3e07dd74ab4b" key="index0" target="change">
+			<os:default-value><![CDATA[#["X"]]]></os:default-value>
+		</os:retrieve>
+		<set-variable value='#[vars.change]' doc:name="value" doc:id="9aac110d-a2e7-4bc1-8987-041bd87a30ab" variableName="value"/>
+		<flow-ref doc:name="tic-tac-toe-Flow-store" doc:id="292aa9b7-e95f-481b-8618-030eccbfb927" name="tic-tac-toe-Flow-store"/>
+		<os:retrieve-all doc:name=" Retrieve all" doc:id="ba55c23f-9e90-4767-9685-5b6589be6d3b" target="RA"/>
+		<ee:transform doc:name="Transform Message" doc:id="e2147612-bf19-49e3-9c38-f38970ddd3a9">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	index1 :vars.RA.index1 default "#",
+	index2 :vars.RA.index2 default "#",
+	index3 :vars.RA.index3 default "#",
+	index4 :vars.RA.index4 default "#",
+	index5 :vars.RA.index5 default "#",
+	index6 :vars.RA.index6 default "#",
+	index7 :vars.RA.index7 default "#",
+	index8 :vars.RA.index8 default "#",
+	index9 :vars.RA.index9 default "#"
+	
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="checkWinCondition" doc:id="65feb23e-b73a-468a-b7de-ce39f52da699">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="check"><![CDATA[%dw 2.0
+output application/json
+---
+
+if( (payload.index1  ++  payload.index2  ++  payload.index3) == "XXX" or (payload.index1  ++  payload.index2  ++  payload.index3) == "OOO") true
+  
+else if ((payload.index4  ++  payload.index5  ++  payload.index6)  == "XXX" or (payload.index4  ++  payload.index5  ++  payload.index6) == "OOO") true
+
+else if ((payload.index7  ++  payload.index8  ++  payload.index9) == "XXX" or (payload.index7  ++  payload.index8  ++  payload.index9) == "OOO") true
+
+else if ((payload.index1  ++  payload.index4  ++  payload.index7) == "XXX" or (payload.index1  ++  payload.index4  ++  payload.index7) == "OOO") true
+
+else if ((payload.index2  ++  payload.index5  ++  payload.index8) == "XXX" or (payload.index2  ++  payload.index5  ++  payload.index8) == "OOO") true
+
+else if ((payload.index3  ++  payload.index6  ++  payload.index9) == "XXX" or (payload.index3  ++  payload.index6  ++  payload.index9) == "OOO") true
+
+else if ((payload.index1  ++  payload.index5  ++  payload.index9) == "XXX" or (payload.index1  ++  payload.index5  ++  payload.index9) == "OOO") true
+
+else if ((payload.index3  ++  payload.index5  ++  payload.index7) == "XXX" or (payload.index3  ++  payload.index5  ++  payload.index7) == "OOO") true
+else false
+]]></ee:set-variable>
+				<ee:set-variable variableName="draw" ><![CDATA[%dw 2.0
+output application/json
+---
+
+if ((payload.index1 == "X" or payload.index1 == "O") and 
+	(payload.index2 == "X" or payload.index2 == "O") and
+	(payload.index3 == "X" or payload.index3 == "O") and
+	(payload.index4 == "X" or payload.index4 == "O" ) and
+	(payload.index5 == "X" or payload.index5 == "O") and
+	(payload.index6 == "X" or payload.index6 == "O" ) and
+	(payload.index7 == "X" or payload.index7 == "O") and
+	(payload.index8 == "X" or payload.index8 == "O" ) and
+	(payload.index9 == "X" or payload.index9 == "O" ) )
+ true 
+ else 
+ 
+ false]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<os:store doc:name="Store" doc:id="3ad2f5dc-f5db-4943-9d4d-b030e00d76d1" key="index0">
+			<os:value ><![CDATA[#[if(vars.change == "X") "O" else "X"]]]></os:value>
+		</os:store>
+		<choice doc:name="Choice" doc:id="07841605-a82a-463a-a5db-3a9f53af1146">
+			<when expression="#[vars.check == true or  vars.draw == true]">
+				<set-variable value="#[if(vars.check == true) &quot;You Won!&quot; else  &quot;It's a Draw!&quot;]" doc:name="finalMessage" doc:id="665aa183-0548-4260-a466-23fd32044775" variableName="finalMessage" />
+				<parse-template doc:name="END" doc:id="a8b0e0da-b212-4b5e-babc-5bc3208b2c17" location="reset.html" />
+			</when>
+			<otherwise>
+				<parse-template doc:name="continue flow" doc:id="a51449b9-83bc-41f5-a1a1-4690ebb522ba" location="pointMark.html" />
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="tic-tac-toeFlow-removeALL" doc:id="3edfac64-9f76-4f33-8805-927bf8220729" >
+		<foreach doc:name="For Each" doc:id="df7bc392-0cf2-48d9-b1d7-f46a6fc31a72" collection="#[vars.RA]" >
+			<try doc:name="Try" doc:id="e86246df-63da-47fe-8363-b90fb195b2f1" >
+				<os:remove doc:name="Remove" doc:id="44eaceef-4ca3-4a82-a8b0-6ee35166c28e" key="#[output application/json --- (payload pluck $$)[0]]" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2cb3300a-8203-47c5-ae99-69e045898054" >
+						<logger level="INFO" doc:name="Logger" doc:id="8af6f176-d439-4391-ade9-057158d8ac83" message="Continue..."/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+				</foreach>
+	</flow>
+	<flow name="tic-tac-toe-Flow-store" doc:id="3f9ffe3c-2b48-444b-8e9f-62b2cebd73d6">
+		<os:store doc:name="Store Individual keys" doc:id="491fa2ee-3721-404b-bfc8-73a791d548c6" key='#["index" ++   attributes.queryString[5]   default "#"]'>
+			<os:value><![CDATA[#[vars.value]]]></os:value>
+		</os:store>
+	</flow>
+</mule>
