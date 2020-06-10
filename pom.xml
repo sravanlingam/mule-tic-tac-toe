@@ -35,6 +35,7 @@
       <environment>${environment}</environment>
       <region>${region}</region>
       <workers>${workers}</workers>
+	    <objectStoreV2>true</objectStoreV2>
       <workerType>${workerType}</workerType>
       <properties>
         <key>value</key>
