@@ -26,7 +26,7 @@
   <version>3.3.2</version>
   <extensions>true</extensions>
   <configuration>
-    <cloudHubDeployment>
+   <!-- <cloudHubDeployment>
       <uri>https://anypoint.mulesoft.com</uri>
       <muleVersion>${app.runtime}</muleVersion>
       <username>${username}</username>
@@ -37,10 +37,24 @@
       <workers>${workers}</workers>
 	 
       <workerType>${workerType}</workerType>
-      <properties>
+    
+    </cloudHubDeployment> -->
+	  <cloudHubDeployment>
+    <uri>https://anypoint.mulesoft.com</uri>
+    <muleVersion>4.3.0</muleVersion>
+    <!-- Deploy User Parameter -->
+    <username>shirishagouru</username>
+    <password>7702482426Ej</password>
+    <!-- Environment Parameter -->
+    <environment>Sandbox</environment>
+    <applicationName>sravan-jenkins</applicationName>
+    <businessGroup>virtusa</businessGroup>
+		<objectStoreV2>true</objectStoreV2>
+  <properties>
         <key>value</key>
       </properties>
-    </cloudHubDeployment>
+</cloudHubDeployment>
+	  
   </configuration>
 </plugin>
 		</plugins>
