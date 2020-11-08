@@ -23,7 +23,7 @@
 			<plugin>
   <groupId>org.mule.tools.maven</groupId>
   <artifactId>mule-maven-plugin</artifactId>
-  <version>3.3.2</version>
+  <version>3.4.1</version>
   <extensions>true</extensions>
   <configuration>
    <!-- <cloudHubDeployment>
@@ -49,7 +49,7 @@
     <environment>Sandbox</environment>
     <applicationName>${appName}</applicationName>
     <businessGroup>virtusa</businessGroup>
-<!-- <objectStoreV2>true</objectStoreV2>-->
+ <objectStoreV2>true</objectStoreV2>
   <properties>
         <key>value</key>
       </properties>
